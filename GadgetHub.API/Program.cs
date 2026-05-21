@@ -53,7 +53,7 @@ builder.Services.AddSwaggerGen(c =>
                      "3. Compare prices and availability\n" +
                      "4. Place orders with selected distributors\n" +
                      "5. Track order status and delivery\n\n" +
-                     "**Authentication:** Add header 'X-API-Key: gadgethub-api-key-2025' (Development: Optional)",
+                     "**Authentication:** Add the `X-API-Key` header to all requests (not required for /test or /swagger).",
         Contact = new OpenApiContact
         {
             Name = "The Gadget Hub Team"
@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
     // Add API Key authentication to Swagger
     c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
-        Description = "API Key needed to access the endpoints. X-API-Key: gadgethub-api-key-2025 (Optional in Development)",
+        Description = "API Key needed to access the endpoints. Use the Authorize button to set your X-API-Key value.",
         In = ParameterLocation.Header,
         Name = "X-API-Key",
         Type = SecuritySchemeType.ApiKey
@@ -187,15 +187,13 @@ if (!app.Environment.IsDevelopment())
     app.UseMiddleware<SimpleAuthMiddleware>();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors("FrontendPolicy");
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/healthz");
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

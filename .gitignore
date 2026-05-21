@@ -1,3 +1,20 @@
+# OS and editor
+.DS_Store
+Thumbs.db
+.vs/
+**/.vs/
+
+# Visual Studio / .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+coverage/
+*.nupkg
+
 # Local databases
 *.db
 *.sqlite
@@ -5,21 +22,33 @@
 *.db-shm
 *.db-wal
 
-# Visual Studio / .NET
-.vs/
-**/.vs/
-**/bin/
-**/obj/
-*.user
-*.suo
-TestResults/
+# ASP.NET secrets and local config
+**/appsettings.Local.json
+**/appsettings.*.local.json
+**/secrets.json
+
+# Keep safe committed config files
+!appsettings.json
+!appsettings.Development.json
+!appsettings.Production.json
 
 # Node / React
 **/node_modules/
 **/build/
 **/dist/
+.pnp/
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Environment files and local secrets
+# Stray package manager files (not Node projects)
+/package-lock.json
+/package.json
+GadgetHub.API/package-lock.json
+GadgetHub.API/package.json
+
+# Environment files
 .env
 .env.local
 .env.development.local
@@ -30,10 +59,16 @@ TestResults/
 **/.env.development.local
 **/.env.test.local
 **/.env.production.local
-**/appsettings.Local.json
-**/appsettings.*.local.json
 
-# Hosting and generated folders
+# Database export backups
+*-backup.sql
+*.sql.backup
+gadgethub-local-backup.sql
+
+# Hosting provider metadata
 **/.vercel/
+**/.render/
+
+# Generated agent/build folders
 **/.codex-build/
 **/.codex-build*/
