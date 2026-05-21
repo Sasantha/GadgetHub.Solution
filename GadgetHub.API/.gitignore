@@ -1,0 +1,13 @@
+bin/
+obj/
+.codex-build*/
+**/.codex-build/
+**/.codex-build*/
+.vs/
+**/.vs/
+*.user
+*.suo
+appsettings.Local.json
+*.db
+*.sqlite
+*.sqlite3

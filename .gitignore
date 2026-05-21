@@ -1,0 +1,39 @@
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Visual Studio / .NET
+.vs/
+**/.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+TestResults/
+
+# Node / React
+**/node_modules/
+**/build/
+**/dist/
+
+# Environment files and local secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+**/appsettings.Local.json
+**/appsettings.*.local.json
+
+# Hosting and generated folders
+**/.vercel/
+**/.codex-build/
+**/.codex-build*/

@@ -1,0 +1,10 @@
+bin/
+obj/
+.codex-build*/
+**/.codex-build/
+**/.codex-build*/
+.git/
+.vs/
+**/.vs/
+*.user
+*.suo
