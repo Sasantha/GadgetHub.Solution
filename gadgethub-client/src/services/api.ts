@@ -1,3 +1,5 @@
+// Base API Service Configuration
+// Uses the configured API base URL for local and deployed environments.
 import { ApiResponse } from '../types';
 import { API_CONFIG } from '../config/api';
 
@@ -9,7 +11,7 @@ export class ApiService {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-
+    
     const defaultHeaders = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -22,8 +24,9 @@ export class ApiService {
     };
 
     try {
+      console.log(`API Request: ${options.method || 'GET'} ${url}`);
       const response = await fetch(url, config);
-
+      
       if (!response.ok) {
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         try {
@@ -31,34 +34,52 @@ export class ApiService {
           if (errorData) {
             errorMessage = errorData;
           }
-        } catch {
-          // use default error message
+        } catch (e) {
+          // Use default error message if can't read response
         }
-        return { success: false, error: errorMessage };
+        
+        console.error(`API Error: ${errorMessage}`);
+        return {
+          success: false,
+          error: errorMessage,
+        };
       }
 
+      // Check if response has content before parsing JSON
       const contentType = response.headers.get('content-type');
       const contentLength = response.headers.get('content-length');
-
+      
       let data: T | undefined = undefined;
-
+      
+      // Only try to parse JSON if there's content
       if (contentType && contentType.includes('application/json') && contentLength !== '0') {
         const responseText = await response.text();
         if (responseText.trim()) {
           try {
             data = JSON.parse(responseText);
-          } catch {
+          } catch (parseError) {
+            console.warn('Failed to parse JSON response:', responseText);
+            // For some endpoints, text response might be acceptable
             data = responseText as unknown as T;
           }
         }
       } else if (contentLength && contentLength !== '0') {
+        // Non-JSON content
         data = await response.text() as unknown as T;
       }
-
-      return { success: true, data };
+      
+      console.log(`API Success: ${options.method || 'GET'} ${url}`, data);
+      return {
+        success: true,
+        data,
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
-      return { success: false, error: errorMessage };
+      console.error(`API Network Error: ${errorMessage}`);
+      return {
+        success: false,
+        error: errorMessage,
+      };
     }
   }
 
@@ -84,11 +105,13 @@ export class ApiService {
     return this.request<T>(endpoint, { method: 'DELETE' });
   }
 
+  // Test API connectivity
   static async testConnection(): Promise<ApiResponse<any>> {
     return this.get('/test/connection');
   }
 
+  // Get base URL for direct file downloads/exports
   static getBaseUrl(): string {
     return this.baseUrl;
   }
-}
+} 

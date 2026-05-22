@@ -143,7 +143,7 @@ const AdminQuotations: React.FC = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        await response.json();
         setShowAddForm(false);
         setSelectedRequest(null);
         loadPendingRequests(); // Refresh the list

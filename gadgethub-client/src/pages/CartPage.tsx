@@ -2,24 +2,14 @@
 // EXACTLY matching your backend CartItem model and CartController endpoints
 import React from 'react';
 import { Link } from 'react-router-dom';
-import type { CartItem } from '../types';
 import { useCart } from '../contexts/CartContext';
 import { useCustomer } from '../contexts/CustomerContext';
 import CartItemComponent from '../components/cart/CartItemComponent';
 import CartSummary from '../components/cart/CartSummary';
 
 const CartPage: React.FC = () => {
-  const { cartItems, isLoading, error, removeFromCart, updateCartItem } = useCart();
+  const { cartItems, isLoading, error } = useCart();
   const { customer } = useCustomer();
-
-  const groupedProducts = cartItems.reduce((acc, item) => {
-    const key = item.productId;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(item);
-    return acc;
-  }, {} as Record<string, CartItem[]>);
 
   // Loading state
   if (isLoading) {

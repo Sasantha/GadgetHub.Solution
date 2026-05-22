@@ -14,31 +14,31 @@ const OrdersPage: React.FC = () => {
   
   const { customer } = useCustomer();
 
-  const loadOrders = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      
-      if (!customer) return;
-      
-      // Use OrderService to get customer's orders - matching your backend GET /api/orders/customer/{customerId}
-      const response = await OrderService.getCustomerOrders(customer.id);
-      
-      if (response && response.success && response.data) {
-        setOrders(response.data);
-      } else {
-        setOrders([]);
-      }
-    } catch (err: any) {
-      console.error('Failed to load orders:', err);
-      setError(err.message || 'Failed to load orders');
-      setOrders([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const loadOrders = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        if (!customer) return;
+        
+        // Use OrderService to get customer's orders - matching your backend GET /api/orders/customer/{customerId}
+        const response = await OrderService.getCustomerOrders(customer.id);
+        
+        if (response && response.success && response.data) {
+          setOrders(response.data);
+        } else {
+          setOrders([]);
+        }
+      } catch (err: any) {
+        console.error('Failed to load orders:', err);
+        setError(err.message || 'Failed to load orders');
+        setOrders([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     loadOrders();
   }, [customer]);
 

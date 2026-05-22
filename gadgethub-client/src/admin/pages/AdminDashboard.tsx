@@ -1,7 +1,6 @@
 // Simplified Admin Dashboard - Big Action Buttons Only
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AdminService } from '../../services/adminService';
 
 const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);

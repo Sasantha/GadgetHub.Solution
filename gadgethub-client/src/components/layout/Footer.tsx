@@ -14,10 +14,10 @@ const Footer: React.FC = () => {
                the best prices and fastest delivery times.</p>
             <div className="footer-social">
               <span>Follow us:</span>
-              <a href="#" aria-label="Facebook">📘</a>
-              <a href="#" aria-label="Twitter">🐦</a>
-              <a href="#" aria-label="Instagram">📷</a>
-              <a href="#" aria-label="LinkedIn">💼</a>
+              <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">📘</a>
+              <a href="https://www.twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">🐦</a>
+              <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">📷</a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">💼</a>
             </div>
           </div>
           

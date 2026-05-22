@@ -1,6 +1,6 @@
 // Cart Context - Global shopping cart state management
 // EXACTLY matching your backend CartController and CartItem structure
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect, ReactNode } from 'react';
 import { CartItem, AddToCartRequest, UpdateCartItemRequest } from '../types';
 import { CartService } from '../services/cartService';
 import { ProductService } from '../services/productService';
@@ -94,7 +94,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const { customer } = useCustomer();
 
   // Load cart from API - matching your backend GET /api/cart/{customerId}
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     if (!customer) return;
 
     try {
@@ -111,7 +111,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Error loading cart' });
     }
-  };
+  }, [customer]);
 
   // Enrich cart items with complete product data
   const enrichCartItemsWithProductData = async (cartItems: CartItem[]): Promise<CartItem[]> => {
@@ -234,7 +234,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     if (customer) {
       loadCart();
     }
-  }, [customer]);
+  }, [customer, loadCart]);
 
   const value: CartContextType = {
     ...state,

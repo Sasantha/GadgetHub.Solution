@@ -1,6 +1,6 @@
 // Customer Context - Manages global customer state and authentication
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { Customer, CustomerLoginRequest, CustomerRegisterRequest } from '../types';
+import type { Customer, CustomerRegisterRequest } from '../types';
 import { CustomerService } from '../services/customerService';
 
 interface CustomerContextType {

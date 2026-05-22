@@ -8,15 +8,6 @@ import { getApiUrl } from '../config/api';
 
 type CheckoutStep = 'cart-review' | 'quotation-submitted' | 'quotes-ready' | 'order-placed';
 
-interface QuotationRequest {
-  id: string;
-  customerId: string;
-  productId: string;
-  quantity: number;
-  status: 'pending' | 'completed';
-  requestedAt: string;
-}
-
 interface QuotationResponse {
   id: string;
   requestId: string;

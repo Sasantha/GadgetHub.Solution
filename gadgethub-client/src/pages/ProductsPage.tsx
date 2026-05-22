@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { ProductService } from '../services';
-import { useCart } from '../contexts/CartContext';
 import { useCustomer } from '../contexts/CustomerContext';
 import ProductList from '../components/product/ProductList';
 import { API_CONFIG } from '../config/api';
@@ -24,7 +23,27 @@ const ProductsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    applyFilters();
+    let filtered = [...products];
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query) ||
+        product.brand?.toLowerCase().includes(query) ||
+        product.category?.toLowerCase().includes(query)
+      );
+    }
+
+    // Filter by category
+    if (selectedCategory) {
+      filtered = filtered.filter(product =>
+        product.category?.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    setFilteredProducts(filtered);
   }, [products, searchQuery, selectedCategory]);
 
   const loadProducts = async () => {
@@ -53,30 +72,6 @@ const ProductsPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const applyFilters = () => {
-    let filtered = [...products];
-
-    // Filter by search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(query) ||
-        product.description?.toLowerCase().includes(query) ||
-        product.brand?.toLowerCase().includes(query) ||
-        product.category?.toLowerCase().includes(query)
-      );
-    }
-
-    // Filter by category
-    if (selectedCategory) {
-      filtered = filtered.filter(product =>
-        product.category?.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-
-    setFilteredProducts(filtered);
   };
 
   const clearFilters = () => {
