@@ -61,6 +61,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(process.env.REACT_APP_API_KEY ? { 'X-API-Key': process.env.REACT_APP_API_KEY } : {}),
         },
         body: JSON.stringify({ username, password })
       });
