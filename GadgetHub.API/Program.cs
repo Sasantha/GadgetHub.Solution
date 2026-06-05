@@ -18,14 +18,20 @@ if (string.IsNullOrWhiteSpace(connectionString) && !isDevelopment)
     );
 }
 
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
-if (allowedOrigins == null || allowedOrigins.Length == 0)
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? Array.Empty<string>();
+
+if (builder.Environment.IsDevelopment())
 {
-    allowedOrigins = builder.Environment.IsDevelopment()
-        ? new[] { "http://localhost:3000", "https://localhost:3000" }
-        : throw new InvalidOperationException(
-            "No CORS origins are configured. Set Cors__AllowedOrigins__0 (and additional entries as needed) for production deployments."
-        );
+    if (allowedOrigins.Length == 0)
+        allowedOrigins = new[] { "http://localhost:3000", "https://localhost:3000" };
+}
+else
+{
+    // Always allow the production Vercel frontend, regardless of env var overrides
+    const string vercelFrontend = "https://gadget-hub-solution.vercel.app";
+    if (!allowedOrigins.Contains(vercelFrontend, StringComparer.OrdinalIgnoreCase))
+        allowedOrigins = allowedOrigins.Append(vercelFrontend).ToArray();
 }
 
 var swaggerEnabled = builder.Environment.IsDevelopment() ||
