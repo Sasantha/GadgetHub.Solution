@@ -4,7 +4,10 @@ const configuredBaseUrl =
   process.env.REACT_APP_API_URL ||
   'http://localhost:5058/api';
 
-const normalizedBaseUrl = configuredBaseUrl.replace(/\/+$/, '');
+const trimmedBaseUrl = configuredBaseUrl.replace(/\/+$/, '');
+const normalizedBaseUrl = trimmedBaseUrl.endsWith('/api')
+  ? trimmedBaseUrl
+  : `${trimmedBaseUrl}/api`;
 
 export const API_CONFIG = {
   BASE_URL: normalizedBaseUrl,

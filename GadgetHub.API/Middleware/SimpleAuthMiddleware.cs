@@ -25,6 +25,12 @@ namespace GadgetHub.API.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var path = context.Request.Path.Value?.ToLower();
+
+            if (HttpMethods.IsOptions(context.Request.Method))
+            {
+                await _next(context);
+                return;
+            }
             
             // Skip auth for specific endpoints
             if (path != null && (path.Contains("/swagger") || 

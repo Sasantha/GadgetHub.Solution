@@ -178,17 +178,18 @@ if (swaggerEnabled)
 
 app.UseForwardedHeaders();
 
+app.UseHttpsRedirection();
+app.UseCors("FrontendPolicy");
+
 // Add custom middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-// Only enable auth in production for educational simplicity
+// Only enable auth in production for educational simplicity. Keep this after CORS so browser preflight succeeds.
 if (!app.Environment.IsDevelopment())
 {
     app.UseMiddleware<SimpleAuthMiddleware>();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("FrontendPolicy");
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/healthz");
