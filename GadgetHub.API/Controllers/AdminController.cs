@@ -22,11 +22,11 @@ namespace GadgetHub.API.Controllers
             try
             {
                 if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
-                    return BadRequest("Username and password are required");
+                    return BadRequest(new { message = "Username and password are required" });
 
                 var admin = await _adminService.AuthenticateAsync(request.Username, request.Password);
                 if (admin == null)
-                    return Unauthorized("Invalid username or password");
+                    return Unauthorized(new { message = "Invalid username or password" });
 
                 // Create response without password hash
                 var response = new

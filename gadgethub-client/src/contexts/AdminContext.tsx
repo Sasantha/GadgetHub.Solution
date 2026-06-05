@@ -79,8 +79,12 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         localStorage.setItem('adminAuth', JSON.stringify(newAuthState));
         return true;
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Invalid username or password');
+        try {
+          const errorData = await response.json();
+          setError(errorData.message || 'Invalid username or password');
+        } catch {
+          setError('Invalid username or password');
+        }
         return false;
       }
     } catch (err) {
